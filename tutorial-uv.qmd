@@ -1,0 +1,111 @@
+---
+title: "Gestión de proyectos Python con `uv`"
+---
+
+# Introducción
+
+En este tutorial se explican aspectos básicos y ejemplos de uso de
+`uv` <https://docs.astral.sh/uv/>, un gestor de paquetes y proyectos
+Python tremendamente rápido y eficiente, escrito en Rust.
+
+Algunas de sus características más detacables son:
+
+- 🚀 Soporta los principales gestores de paquetes como `pip` o
+`virtualenv`.
+- &#9889; ejecución entre 10-100 veces más rápido que `pip`.
+- 🗂️ Gestión integral del proyecto con un archivo *lock* universal
+y un archivo `.toml` legible con todos los datos de configuración y
+dependencias.
+- 💾 Gestión eficiente de espacio en disco, con una caché global
+para mantenimiento de dependencias y eliminación de duplicados.
+- 🖥️ Soporte multiplataforma (Linux, macOS y Windows).
+
+## Instalación
+
+Existen diferentes métodos de instalación, documentados en la siguiente página:
+
+- <https://docs.astral.sh/uv/getting-started/installation/>.
+
+En Linux o macOS, lo recomendable es instalar `uv` mediante `curl`:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+# Gestión de proyectos
+
+## Inicialización de un proyecto
+
+::: {.callout-note}
+Fuente: <https://docs.astral.sh/uv/concepts/projects/init/>.
+:::
+
+Para crear un proyecto ejecutamos en una terminal el siguiente
+comando, donde sustituiremos `my-project` por el nombre de nuestro
+proyecto o aplicación:
+
+```bash
+uv init my-project
+```
+
+Como resultado se crean varios archivos que podemos inspeccionar.
+
+```bash
+tree -a my-project/
+my-project/
+├── .git
+├── [...]
+├── .gitignore
+├── hello.py
+├── pyproject.toml
+├── .python-version
+└── README.md
+```
+
+- Archivo `pyproject.toml` que contiene información de configuración
+y dependencias del proyecto.
+- Archivo `.python-version` con información sobre la versión de Python
+que se usa en el proyecto.
+- Archivos básicos para inicializar el control de versiones del proyecto
+con Git.
+- Un archivo `README.md` y un archivo `hello.py` de ejemplo.
+
+Se pueden crear diferentes tipos de proyectos con la opción apropiada
+del comando `uv init`:
+
+- `uv init --package my-pkg` para creación de paquetes Python (que
+luego se puedan publicar en PyPI).
+- `uv init --lib my-lib` para librerías que ofrezcan objetos y funciones
+a otros proyectos.
+- `uv init my-project --bare` para generar un proyecto con la mínima
+configuración posible (sólo crea un archivo `pyproject.toml`).
+
+## Gestión de dependencias software
+
+::: {.callout-note}
+Fuente: <https://docs.astral.sh/uv/concepts/projects/dependencies/>.
+:::
+
+## Ejecución de código
+
+::: {.callout-note}
+Fuente: <https://docs.astral.sh/uv/concepts/projects/run/>.
+:::
+
+# Gestión de entornos virtuales
+
+## Creación de un entorno virtual (interfaz con `pip`)
+
+::: {.callout-note}
+Fuente: <https://docs.astral.sh/uv/pip/environments/>.
+:::
+
+## Gestión de paquetes en el entorno virtual
+
+::: {.callout-note}
+Fuente: <https://docs.astral.sh/uv/pip/packages/>.
+:::
+
+Los paquetes instalados de esta forma están disponibles en el entorno
+virtual, pero no se reflejan en las dependencias declaradas en el
+archivo `pyproject.toml`.
