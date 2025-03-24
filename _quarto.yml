@@ -1,0 +1,9 @@
+project:
+  title: "tutorial-uv"
+  output-dir: public
+
+format:
+  html:
+    theme: flatly
+    toc: true
+
