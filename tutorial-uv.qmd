@@ -32,6 +32,23 @@ En Linux o macOS, lo recomendable es instalar `uv` mediante `curl`:
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
+En Windows el proceso es muy similar, ejecutando un comando desde una terminal, por ejemplo, PowerShell.
+
+## Principales ventajas
+
+- Cada proyecto tiene su propio intérprete de Python, diferente del resto de proyectos. Esto permite que
+los proyectos sean autocontenidos y facilita su gestión.
+
+- En cada proyecto queda documentado el listado de paquetes que son dependencias necesarias para su
+funcionamiento. Esto permite que se pueda consultar esta información en el futuro (si hace tiempo que no
+trabajamos en un proyecto), así como enviar la relación de paquetes a otros desarrolladores para que puedan
+replicar el mismo entorno.
+
+- Sólo se instalan los paquetes estrictamente necesarios para cada proyecto. Esto supone un considerable
+ahorro de espacio en disco, frente a otros gestores alternativos de paquetes Python que instalan por defecto
+muchos paquetes que luego no se utilzan.
+
+
 # Gestión de proyectos
 
 ## Inicialización de un proyecto
