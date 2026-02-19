@@ -1,9 +1,19 @@
 project:
-  title: "tutorial-uv"
-  output-dir: public
+  output-dir: docs
+  preview:
+    port: 9002
+    browser: true
+
+title: "tutorial-uv"
+author: "Felipe Ortega"
+date: "2026/02/19"
+lang: es
 
 format:
   html:
-    theme: flatly
     toc: true
+    toc-depth: 2
+    number-sections: true
+    theme: cosmo
+    css: styles.css
 
