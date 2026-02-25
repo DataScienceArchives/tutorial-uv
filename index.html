@@ -84,18 +84,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#introducción" id="toc-introducción" class="nav-link active" data-scroll-target="#introducción"><span class="header-section-number">1</span> Introducción</a>
   <ul class="collapse">
   <li><a href="#instalación" id="toc-instalación" class="nav-link" data-scroll-target="#instalación"><span class="header-section-number">1.1</span> Instalación</a></li>
-  <li><a href="#principales-ventajas" id="toc-principales-ventajas" class="nav-link" data-scroll-target="#principales-ventajas"><span class="header-section-number">1.2</span> Principales ventajas</a></li>
+  <li><a href="#principales-ventajas-de-uv" id="toc-principales-ventajas-de-uv" class="nav-link" data-scroll-target="#principales-ventajas-de-uv"><span class="header-section-number">1.2</span> Principales ventajas de <code>uv</code></a></li>
   </ul></li>
   <li><a href="#gestión-de-proyectos" id="toc-gestión-de-proyectos" class="nav-link" data-scroll-target="#gestión-de-proyectos"><span class="header-section-number">2</span> Gestión de proyectos</a>
   <ul class="collapse">
   <li><a href="#inicialización-de-un-proyecto" id="toc-inicialización-de-un-proyecto" class="nav-link" data-scroll-target="#inicialización-de-un-proyecto"><span class="header-section-number">2.1</span> Inicialización de un proyecto</a></li>
   <li><a href="#gestión-de-dependencias-software" id="toc-gestión-de-dependencias-software" class="nav-link" data-scroll-target="#gestión-de-dependencias-software"><span class="header-section-number">2.2</span> Gestión de dependencias software</a></li>
-  <li><a href="#ejecución-de-código" id="toc-ejecución-de-código" class="nav-link" data-scroll-target="#ejecución-de-código"><span class="header-section-number">2.3</span> Ejecución de código</a></li>
-  </ul></li>
-  <li><a href="#gestión-de-entornos-virtuales" id="toc-gestión-de-entornos-virtuales" class="nav-link" data-scroll-target="#gestión-de-entornos-virtuales"><span class="header-section-number">3</span> Gestión de entornos virtuales</a>
-  <ul class="collapse">
-  <li><a href="#creación-de-un-entorno-virtual-interfaz-con-pip" id="toc-creación-de-un-entorno-virtual-interfaz-con-pip" class="nav-link" data-scroll-target="#creación-de-un-entorno-virtual-interfaz-con-pip"><span class="header-section-number">3.1</span> Creación de un entorno virtual (interfaz con <code>pip</code>)</a></li>
-  <li><a href="#gestión-de-paquetes-en-el-entorno-virtual" id="toc-gestión-de-paquetes-en-el-entorno-virtual" class="nav-link" data-scroll-target="#gestión-de-paquetes-en-el-entorno-virtual"><span class="header-section-number">3.2</span> Gestión de paquetes en el entorno virtual</a></li>
+  <li><a href="#gestión-de-dependencias-software-de-desarrollo" id="toc-gestión-de-dependencias-software-de-desarrollo" class="nav-link" data-scroll-target="#gestión-de-dependencias-software-de-desarrollo"><span class="header-section-number">2.3</span> Gestión de dependencias software de desarrollo</a></li>
+  <li><a href="#dependencias-de-construcción-de-un-proyecto" id="toc-dependencias-de-construcción-de-un-proyecto" class="nav-link" data-scroll-target="#dependencias-de-construcción-de-un-proyecto"><span class="header-section-number">2.4</span> Dependencias de construcción de un proyecto</a></li>
+  <li><a href="#ejecución-de-código" id="toc-ejecución-de-código" class="nav-link" data-scroll-target="#ejecución-de-código"><span class="header-section-number">2.5</span> Ejecución de código</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -154,12 +151,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-LsSf</span> https://astral.sh/uv/install.sh <span class="kw">|</span> <span class="fu">sh</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>En Windows el proceso es muy similar, ejecutando un comando desde una terminal, por ejemplo, PowerShell.</p>
 </section>
-<section id="principales-ventajas" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="principales-ventajas"><span class="header-section-number">1.2</span> Principales ventajas</h2>
+<section id="principales-ventajas-de-uv" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="principales-ventajas-de-uv"><span class="header-section-number">1.2</span> Principales ventajas de <code>uv</code></h2>
 <ul>
-<li><p>Cada proyecto tiene su propio intérprete de Python, diferente del resto de proyectos. Esto permite que los proyectos sean autocontenidos y facilita su gestión.</p></li>
-<li><p>En cada proyecto queda documentado el listado de paquetes que son dependencias necesarias para su funcionamiento. Esto permite que se pueda consultar esta información en el futuro (si hace tiempo que no trabajamos en un proyecto), así como enviar la relación de paquetes a otros desarrolladores para que puedan replicar el mismo entorno.</p></li>
-<li><p>Sólo se instalan los paquetes estrictamente necesarios para cada proyecto. Esto supone un considerable ahorro de espacio en disco, frente a otros gestores alternativos de paquetes Python que instalan por defecto muchos paquetes que luego no se utilzan.</p></li>
+<li><p>Todo el código y los metadatos de un proyecto residen en un único directorio, separado del resto de proyectos. Esto facilita la organización y gestión de los proyectos, así como su traslado a otros sistemas o su compartición con otros desarrolladores.</p></li>
+<li><p>Cada proyecto tiene un archivo <code>pyproject.toml</code> con toda la información de configuración y dependencias software. Esto incluye:</p>
+<ul>
+<li><strong>Metadatos</strong> sobre el proyecto (nombre, versión, descripción, etc.).</li>
+<li>La <strong>versión de Python</strong> que se usa en el proyecto.</li>
+<li>El listado de paquetes que son <strong>dependencias</strong> para su correcto funcionamiento. Esto permite que se pueda consultar esta información en el futuro (si hace tiempo que no trabajamos en un proyecto), así como publicar la relación de dependencias para que otros desarrolladores puedan replicar el mismo entorno.</li>
+<li>El listado de paquetes que son <strong>dependencias de desarrollo</strong>, necesarias para el desarrollo del proyecto pero no para su funcionamiento (por ejemplo, paquetes de testing o de generación de documentación).</li>
+</ul></li>
+<li><p>Cada proyecto tiene su propio <strong>intérprete de Python</strong> (entorno virtual). Esto permite que la ejecución del código proyectos sean autocontenida y facilita su gestión. Las dependencias software se instalan en el entorno virtual del proyecto, sin afectar a otros proyectos o al sistema operativo. También se pueden sincronizar fácilmente los entornos virtuales con el listado de dependencias declarado en el archivo <code>pyproject.toml</code>.</p></li>
+<li><p>Existe una <strong>caché global</strong> que almacena los paquetes instalados. Sólo se instalan los paquetes estrictamente necesarios para cada proyecto. Esto supone un considerable ahorro de espacio en disco, frente a otros gestores alternativos de paquetes Python que instalan por defecto muchos paquetes que luego no se utilzan.</p></li>
 </ul>
 </section>
 </section>
@@ -182,20 +186,19 @@ Nota
 </div>
 <p>Para crear un proyecto ejecutamos en una terminal el siguiente comando, donde sustituiremos <code>my-project</code> por el nombre de nuestro proyecto o aplicación:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> init my-project</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Como resultado se crean varios archivos que podemos inspeccionar.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">-a</span> my-project/</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">my-project/</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> .git</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> <span class="pp">[</span><span class="ss">...</span><span class="pp">]</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> .gitignore</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> hello.py</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> pyproject.toml</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> .python-version</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> README.md</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Como resultado, dentro del dierctorio se crean varios archivos que podemos inspeccionar.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> example-app</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">-a</span> my-project/</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">my-project/</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> main.py</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> pyproject.toml</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> .python-version</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> README.md</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li>Archivo <code>pyproject.toml</code> que contiene información de configuración y dependencias del proyecto.</li>
+<li>Un archivo <code>main.py</code> con un ejemplo básico de código Python, que imprime un mensaje de bienvenida en la terminal.</li>
+<li>Archivo <code>pyproject.toml</code> que contiene metadatos del proyecto, así como información de configuración, dependencias de funcionamiento y de desarrollo.</li>
 <li>Archivo <code>.python-version</code> con información sobre la versión de Python que se usa en el proyecto.</li>
-<li>Archivos básicos para inicializar el control de versiones del proyecto con Git.</li>
 <li>Un archivo <code>README.md</code> y un archivo <code>hello.py</code> de ejemplo.</li>
 </ul>
 <p>Se pueden crear diferentes tipos de proyectos con la opción apropiada del comando <code>uv init</code>:</p>
@@ -204,6 +207,24 @@ Nota
 <li><code>uv init --lib my-lib</code> para librerías que ofrezcan objetos y funciones a otros proyectos.</li>
 <li><code>uv init my-project --bare</code> para generar un proyecto con la mínima configuración posible (sólo crea un archivo <code>pyproject.toml</code>).</li>
 </ul>
+<section id="ejemplo-de-un-archivo-pyproject.toml" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="ejemplo-de-un-archivo-pyproject.toml"><span class="header-section-number">2.1.1</span> Ejemplo de un archivo <code>pyproject.toml</code></h3>
+<p>La sintaxis y estructura del archivo <code>pyproject.toml</code> se especifica en el <a href="https://packaging.python.org/en/latest/specifications/pyproject-toml/">estándar PEP 621</a>, que define cómo se deben declarar los metadatos y las dependencias de un proyecto Python.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[project]</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">name</span> <span class="op">=</span> <span class="st">"my-project"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dt">version</span> <span class="op">=</span> <span class="st">"0.1.0"</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="dt">description</span> <span class="op">=</span> <span class="st">"A simple Python project created with uv"</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="dt">authors</span> <span class="op">=</span> <span class="op">[</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">{ </span><span class="dt">name</span><span class="op"> =</span> <span class="st">"Felipe Ortega"</span><span class="op">, </span><span class="dt">email</span><span class="op"> =</span> <span class="st">"felipe.ortega@urjc.es"</span><span class="op"> }</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="dt">readme</span> <span class="op">=</span> <span class="st">"README.md"</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="dt">requires-python</span> <span class="op">=</span> <span class="st">"&gt;=3.11"</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="dt">dependencies</span> <span class="op">=</span> <span class="op">[</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"requests"</span><span class="op">,</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"numpy"</span><span class="op">,</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"polars"</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="op">]</span> </span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
 </section>
 <section id="gestión-de-dependencias-software" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="gestión-de-dependencias-software"><span class="header-section-number">2.2</span> Gestión de dependencias software</h2>
@@ -220,9 +241,64 @@ Nota
 <p>Fuente: <a href="https://docs.astral.sh/uv/concepts/projects/dependencies/" class="uri">https://docs.astral.sh/uv/concepts/projects/dependencies/</a>.</p>
 </div>
 </div>
+<section id="añadir-dependencias-a-un-proyecto" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="añadir-dependencias-a-un-proyecto"><span class="header-section-number">2.2.1</span> Añadir dependencias a un proyecto</h3>
+<p>Para añadir una nueva dependencia a un proyecto, se puede editar el archivo <code>pyproject.toml</code> e incluir el nombre del paquete en la sección <code>dependencies</code>, o bien ejecutar el siguiente comando en la terminal:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> add requests</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Esto genera una nueva entrada en el archivo <code>pyproject.toml</code> con el nombre del paquete y su versión, y también se instala el paquete en el entorno virtual del proyecto.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[project]</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="dt">name</span> <span class="op">=</span> <span class="st">"my-project"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="dt">version</span> <span class="op">=</span> <span class="st">"0.1.0"</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="dt">description</span> <span class="op">=</span> <span class="st">"A simple Python project created with uv"</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="dt">dependencies</span> <span class="op">=</span> <span class="op">[</span><span class="st">"requests&gt;=2.31.0"</span><span class="op">]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>El listado de dependencias especificadas en la variable de configuración <code>project.dependencies</code> sigue la sintaxis expecificada en el PEP 508, que permite incluir información adicional sobre la versión del paquete, así comootros detalles como el sistema operativo o la versión de Python.</p>
+<p>También se pueden añadir dependencias de repositorios de terceros, por ejemplo, de GitHub, que todavía no estén publicadas en PyPI:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> add <span class="st">"httpx @ git+https://github.com/encode/httpx"</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Esto añade una nueva entrada en el archivo <code>pyproject.toml</code> con el nombre del paquete y la URL del repositorio de fuentes de código:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.uv.sources]</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="dt">httpx</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">git</span><span class="op"> =</span> <span class="st">"https://github.com/encode/httpx"</span><span class="op"> }</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="ejecución-de-código" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="ejecución-de-código"><span class="header-section-number">2.3</span> Ejecución de código</h2>
+<section id="eliminar-dependencias-de-un-proyecto" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="eliminar-dependencias-de-un-proyecto"><span class="header-section-number">2.2.2</span> Eliminar dependencias de un proyecto</h3>
+<p>Para eliminar una dependencia de un proyecto, se puede editar el archivo <code>pyproject.toml</code> y eliminar la entrada correspondiente en la sección <code>dependencies</code>, o bien ejecutar el siguiente comando en la terminal:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> remove requests</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="gestión-de-dependencias-software-de-desarrollo" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="gestión-de-dependencias-software-de-desarrollo"><span class="header-section-number">2.3</span> Gestión de dependencias software de desarrollo</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Fuente: <a href="https://docs.astral.sh/uv/concepts/projects/dependencies/" class="uri">https://docs.astral.sh/uv/concepts/projects/dependencies/</a>.</p>
+</div>
+</div>
+<p>Al contrario de las dependencias de funcionamiento, las dependencias de desarrollo no son necesarias para el correcto funcionamiento de un proyecto, sino que son necesarias para su desarrollo, por ejemplo, para ejecutar tests o generar documentación. Por lo tanto, <em>no se incluyen</em> en los requisitos de instalación del proyecto cuando se publica en el PyPI o en otros repositorios de paquetes Python.</p>
+<p>Para añadir una dependencia de desarrollo a un proyecto se ejecuta:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> add <span class="at">--dev</span> pytest</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>uv</code> utiliza el formato de tabla <code>[dependency-groups]</code> del archivo <code>pyproject.toml</code> para declarar las dependencias de desarrollo, con el nombre del grupo de dependencias (en este caso, <code>dev</code>) y el listado de paquetes que forman parte de ese grupo:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[dependency-groups]</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="dt">dev</span> <span class="op">=</span> <span class="op">[</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"pytest &gt;=8.1.1,&lt;9"</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Se puede consultar la <a href="https://peps.python.org/pep-0735/#dependency-groups">PEP 735</a> para más detalles sobre la sintaxis y estructura de esta sección del archivo <code>pyproject.toml</code>.</p>
+</section>
+<section id="dependencias-de-construcción-de-un-proyecto" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="dependencias-de-construcción-de-un-proyecto"><span class="header-section-number">2.4</span> Dependencias de construcción de un proyecto</h2>
+<p>Cuando estamos desarrollando un paquete Python que queremos publicar en PyPI, es necesario declarar las dependencias de construcción del proyecto, es decir, los paquetes necesarios para construir el paquete Python a partir del código fuente (pero que no se necesita instalar para que funcione una vez generado).</p>
+<p>Estas dependencias se declaran en la sección <code>[build-system]</code> del archivo <code>pyproject.toml</code>, con el nombre del sistema de construcción (por ejemplo, <code>setuptools</code>) y el listado de paquetes necesarios para su funcionamiento:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[build-system]</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="dt">requires</span> <span class="op">=</span> <span class="op">[</span><span class="st">"setuptools&gt;=42"</span><span class="op">]</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="dt">build-backend</span> <span class="op">=</span> <span class="st">"setuptools.build_meta"</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="ejecución-de-código" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="ejecución-de-código"><span class="header-section-number">2.5</span> Ejecución de código</h2>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -236,42 +312,24 @@ Nota
 <p>Fuente: <a href="https://docs.astral.sh/uv/concepts/projects/run/" class="uri">https://docs.astral.sh/uv/concepts/projects/run/</a>.</p>
 </div>
 </div>
+<p>Por defecto <code>uv</code> ejecuta el código Python en el entorno virtual del proyecto, lo que garantiza que se utilizan las dependencias software declaradas en el archivo <code>pyproject.toml</code> y que el proyecto es autocontenida. Para ejecutar un script Python, se puede usar el comando <code>uv run</code> seguido del nombre del script:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run main.py</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Para la ejecución de este código, <code>uv</code> activa el entorno virtual del proyecto, instala las dependencias necesarias (si no están ya instaladas) y luego ejecuta el script <code>main.py</code> con el intérprete de Python del entorno virtual. El entorno virtual del proyecto reside en el directorio <code>.venv</code> dentro del directorio del proyecto, y se activa automáticamente al ejecutar el comando <code>uv run</code>.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">jfelipe@helium:~/Docencia/URJC/Grado/SDPD2/lab/example-uv$</span> uv run main.py</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Using</span> CPython 3.11.11</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Creating</span> virtual environment at: .venv</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Hello</span> from example-uv!</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Cuando añadimos paquetes de dependencias de funcionamiento o de desarrollo a un proyecto, <code>uv</code> los instala automáticamente en el entorno virtual del proyecto.</p>
+<section id="activación-del-entorno-virtual-de-un-proyecto" class="level3" data-number="2.5.1">
+<h3 data-number="2.5.1" class="anchored" data-anchor-id="activación-del-entorno-virtual-de-un-proyecto"><span class="header-section-number">2.5.1</span> Activación del entorno virtual de un proyecto</h3>
+<p>Para activar el entorno virtual de un proyecto, si estamos usando el que crea por defecto <code>uv</code> en nuestro proyecto, se puede usar el comando:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> source .venv/bin/activate</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Para desactivar el entorno virtual, se ejecuta el comando:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> deactivate</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>También se puede usar el comando <code>uv shell</code> para activar el entorno virtual del proyecto en una nueva sesión de terminal:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> shell</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Pór último, se puede configurar nuestra IDE favorita para que use el intérprete de Python del entorno virtual del proyecto, lo que nos permitirá ejecutar el código del proyecto directamente desde la IDE, sin necesidad de activar manualmente el entorno virtual en la terminal. Por ejemplo, en Visual Studio Code, se puede seleccionar el intérprete de Python del entorno virtual del proyecto desde la paleta de comandos (Ctrl+Shift+P) y luego ejecutar el código desde la IDE.</p>
 </section>
-</section>
-<section id="gestión-de-entornos-virtuales" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Gestión de entornos virtuales</h1>
-<section id="creación-de-un-entorno-virtual-interfaz-con-pip" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="creación-de-un-entorno-virtual-interfaz-con-pip"><span class="header-section-number">3.1</span> Creación de un entorno virtual (interfaz con <code>pip</code>)</h2>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Nota
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Fuente: <a href="https://docs.astral.sh/uv/pip/environments/" class="uri">https://docs.astral.sh/uv/pip/environments/</a>.</p>
-</div>
-</div>
-</section>
-<section id="gestión-de-paquetes-en-el-entorno-virtual" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="gestión-de-paquetes-en-el-entorno-virtual"><span class="header-section-number">3.2</span> Gestión de paquetes en el entorno virtual</h2>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Nota
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Fuente: <a href="https://docs.astral.sh/uv/pip/packages/" class="uri">https://docs.astral.sh/uv/pip/packages/</a>.</p>
-</div>
-</div>
-<p>Los paquetes instalados de esta forma están disponibles en el entorno virtual, pero no se reflejan en las dependencias declaradas en el archivo <code>pyproject.toml</code>.</p>
 </section>
 </section>
 
