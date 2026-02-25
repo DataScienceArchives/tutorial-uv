@@ -4,11 +4,6 @@ project:
     port: 9002
     browser: true
 
-title: "tutorial-uv"
-author: "Felipe Ortega"
-date: "2026/02/19"
-lang: es
-
 format:
   html:
     toc: true

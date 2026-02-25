@@ -1,5 +1,8 @@
 ---
 title: "Gestión de proyectos Python con `uv`"
+author: "Felipe Ortega"
+date: "2026/02/19"
+lang: es
 ---
 
 # Introducción
@@ -34,19 +37,25 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 En Windows el proceso es muy similar, ejecutando un comando desde una terminal, por ejemplo, PowerShell.
 
-## Principales ventajas
+## Principales ventajas de `uv`
 
-- Cada proyecto tiene su propio intérprete de Python, diferente del resto de proyectos. Esto permite que
-los proyectos sean autocontenidos y facilita su gestión.
+- Todo el código y los metadatos de un proyecto residen en un único directorio, separado del resto de proyectos.
+Esto facilita la organización y gestión de los proyectos, así como su traslado a otros sistemas o su compartición con otros desarrolladores.
 
-- En cada proyecto queda documentado el listado de paquetes que son dependencias necesarias para su
-funcionamiento. Esto permite que se pueda consultar esta información en el futuro (si hace tiempo que no
-trabajamos en un proyecto), así como enviar la relación de paquetes a otros desarrolladores para que puedan
-replicar el mismo entorno.
+- Cada proyecto tiene un archivo `pyproject.toml` con toda la información de configuración y dependencias software.
+Esto incluye:
+  - **Metadatos** sobre el proyecto (nombre, versión, descripción, etc.).
+  - La **versión de Python** que se usa en el proyecto.
+  - El listado de paquetes que son **dependencias** para su correcto funcionamiento. Esto permite que se pueda 
+  consultar esta información en el futuro (si hace tiempo que no trabajamos en un proyecto), así como publicar 
+  la relación de dependencias para que otros desarrolladores puedan replicar el mismo entorno.
+  - El listado de paquetes que son **dependencias de desarrollo**, necesarias para el desarrollo del proyecto pero no para su funcionamiento (por ejemplo, paquetes de testing o de generación de documentación).
 
-- Sólo se instalan los paquetes estrictamente necesarios para cada proyecto. Esto supone un considerable
-ahorro de espacio en disco, frente a otros gestores alternativos de paquetes Python que instalan por defecto
-muchos paquetes que luego no se utilzan.
+- Cada proyecto tiene su propio **intérprete de Python** (entorno virtual). Esto permite que la ejecución del código proyectos sean autocontenida y facilita su gestión. Las dependencias software se instalan en el entorno virtual del proyecto, sin afectar a otros proyectos o al sistema operativo. También se pueden sincronizar fácilmente los entornos virtuales con el listado de dependencias declarado en el archivo `pyproject.toml`.
+
+- Existe una **caché global** que almacena los paquetes instalados. Sólo se instalan los paquetes estrictamente
+necesarios para cada proyecto. Esto supone un considerable ahorro de espacio en disco, frente a otros gestores
+alternativos de paquetes Python que instalan por defecto muchos paquetes que luego no se utilzan.
 
 
 # Gestión de proyectos
@@ -57,34 +66,31 @@ muchos paquetes que luego no se utilzan.
 Fuente: <https://docs.astral.sh/uv/concepts/projects/init/>.
 :::
 
-Para crear un proyecto ejecutamos en una terminal el siguiente
-comando, donde sustituiremos `my-project` por el nombre de nuestro
-proyecto o aplicación:
+Para crear un proyecto ejecutamos en una terminal el siguiente comando, donde sustituiremos 
+`my-project` por el nombre de nuestro proyecto o aplicación:
 
 ```bash
 uv init my-project
 ```
 
-Como resultado se crean varios archivos que podemos inspeccionar.
+Como resultado, dentro del dierctorio se crean varios archivos que podemos inspeccionar.
 
 ```bash
+tree example-app
 tree -a my-project/
 my-project/
-├── .git
-├── [...]
-├── .gitignore
-├── hello.py
+.
+├── main.py
 ├── pyproject.toml
 ├── .python-version
 └── README.md
 ```
 
-- Archivo `pyproject.toml` que contiene información de configuración
-y dependencias del proyecto.
+- Un archivo `main.py` con un ejemplo básico de código Python, que imprime un mensaje de bienvenida en la terminal.
+- Archivo `pyproject.toml` que contiene metadatos del proyecto, así como información de configuración,
+dependencias de funcionamiento y de desarrollo.
 - Archivo `.python-version` con información sobre la versión de Python
 que se usa en el proyecto.
-- Archivos básicos para inicializar el control de versiones del proyecto
-con Git.
 - Un archivo `README.md` y un archivo `hello.py` de ejemplo.
 
 Se pueden crear diferentes tipos de proyectos con la opción apropiada
@@ -97,11 +103,122 @@ a otros proyectos.
 - `uv init my-project --bare` para generar un proyecto con la mínima
 configuración posible (sólo crea un archivo `pyproject.toml`).
 
+### Ejemplo de un archivo `pyproject.toml`
+
+La sintaxis y estructura del archivo `pyproject.toml` se especifica en el 
+[estándar PEP 621](https://packaging.python.org/en/latest/specifications/pyproject-toml/), que define 
+cómo se deben declarar los metadatos y las dependencias de un proyecto Python.
+
+```toml
+[project]
+name = "my-project"
+version = "0.1.0"
+description = "A simple Python project created with uv"
+authors = [
+    { name = "Felipe Ortega", email = "felipe.ortega@urjc.es" }
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "requests",
+    "numpy",
+    "polars"
+] 
+```
+
 ## Gestión de dependencias software
 
 ::: {.callout-note}
 Fuente: <https://docs.astral.sh/uv/concepts/projects/dependencies/>.
 :::
+
+### Añadir dependencias a un proyecto
+
+Para añadir una nueva dependencia a un proyecto, se puede editar el archivo `pyproject.toml` e incluir 
+el nombre del paquete en la sección `dependencies`, o bien ejecutar el siguiente comando en la terminal:
+
+```bash
+uv add requests
+```
+
+Esto genera una nueva entrada en el archivo `pyproject.toml` con el nombre del paquete y su versión, 
+y también se instala el paquete en el entorno virtual del proyecto.
+
+```toml
+[project]
+name = "my-project"
+version = "0.1.0"
+description = "A simple Python project created with uv"
+dependencies = ["requests>=2.31.0"]
+```
+
+El listado de dependencias especificadas en la variable de configuración `project.dependencies` sigue la
+sintaxis expecificada en el PEP 508, que permite incluir información adicional sobre la versión del paquete, así comootros detalles como el sistema operativo o la versión de Python.
+
+También se pueden añadir dependencias de repositorios de terceros, por ejemplo, de GitHub, que todavía no
+estén publicadas en PyPI:
+
+```bash
+uv add "httpx @ git+https://github.com/encode/httpx"
+```
+
+Esto añade una nueva entrada en el archivo `pyproject.toml` con el nombre del paquete y la URL del repositorio
+de fuentes de código:
+
+```toml
+[tool.uv.sources]
+httpx = { git = "https://github.com/encode/httpx" }
+```
+### Eliminar dependencias de un proyecto
+
+Para eliminar una dependencia de un proyecto, se puede editar el archivo `pyproject.toml` y eliminar la
+entrada correspondiente en la sección `dependencies`, o bien ejecutar el siguiente comando en la terminal:
+
+```bash
+uv remove requests
+```
+
+## Gestión de dependencias software de desarrollo
+
+::: {.callout-note}
+Fuente: <https://docs.astral.sh/uv/concepts/projects/dependencies/>.
+:::
+
+Al contrario de las dependencias de funcionamiento, las dependencias de desarrollo no son necesarias para 
+el correcto funcionamiento de un proyecto, sino que son necesarias para su desarrollo, por ejemplo, 
+para ejecutar tests o generar documentación. Por lo tanto, *no se incluyen* en los requisitos de 
+instalación del proyecto cuando se publica en el PyPI o en otros repositorios de paquetes Python.
+
+Para añadir una dependencia de desarrollo a un proyecto se ejecuta:
+
+```bash
+uv add --dev pytest
+```
+
+`uv` utiliza el formato de tabla `[dependency-groups]` del archivo `pyproject.toml` para declarar las dependencias de desarrollo, con el nombre del grupo de dependencias (en este caso, `dev`) y el listado de paquetes que forman parte de ese grupo:
+
+```toml
+[dependency-groups]
+dev = [
+  "pytest >=8.1.1,<9"
+]
+```
+
+Se puede consultar la [PEP 735 ](https://peps.python.org/pep-0735/#dependency-groups) para más detalles sobre la sintaxis y estructura de esta sección del archivo `pyproject.toml`.
+
+## Dependencias de construcción de un proyecto
+
+Cuando estamos desarrollando un paquete Python que queremos publicar en PyPI, es necesario declarar las dependencias de 
+construcción del proyecto, es decir, los paquetes necesarios para construir el paquete Python a partir del código fuente
+(pero que no se necesita instalar para que funcione una vez generado). 
+
+Estas dependencias se declaran en la sección `[build-system]` del archivo `pyproject.toml`, con el nombre del sistema de construcción (por ejemplo, `setuptools`) y el listado de paquetes necesarios para su funcionamiento:
+
+```toml
+[build-system]
+requires = ["setuptools>=42"]
+build-backend = "setuptools.build_meta"
+```
 
 ## Ejecución de código
 
@@ -109,20 +226,48 @@ Fuente: <https://docs.astral.sh/uv/concepts/projects/dependencies/>.
 Fuente: <https://docs.astral.sh/uv/concepts/projects/run/>.
 :::
 
-# Gestión de entornos virtuales
+Por defecto `uv` ejecuta el código Python en el entorno virtual del proyecto, lo que garantiza que se utilizan las dependencias software declaradas en el archivo `pyproject.toml` y que el proyecto es autocontenida. Para ejecutar un script Python, se puede usar el comando `uv run` seguido del nombre del script:
 
-## Creación de un entorno virtual (interfaz con `pip`)
+```bash
+uv run main.py
+```
 
-::: {.callout-note}
-Fuente: <https://docs.astral.sh/uv/pip/environments/>.
-:::
+Para la ejecución de este código, `uv` activa el entorno virtual del proyecto, instala las dependencias necesarias (si no están ya instaladas) y luego ejecuta el script `main.py` con el intérprete de Python del entorno virtual. El entorno
+virtual del proyecto reside en el directorio `.venv` dentro del directorio del proyecto, y se activa automáticamente al ejecutar el comando `uv run`.
 
-## Gestión de paquetes en el entorno virtual
+```bash
+jfelipe@helium:~/Docencia/URJC/Grado/SDPD2/lab/example-uv$ uv run main.py
+Using CPython 3.11.11
+Creating virtual environment at: .venv
+Hello from example-uv!
+```
 
-::: {.callout-note}
-Fuente: <https://docs.astral.sh/uv/pip/packages/>.
-:::
+Cuando añadimos paquetes de dependencias de funcionamiento o de desarrollo a un proyecto, `uv` 
+los instala automáticamente en el entorno virtual del proyecto.
 
-Los paquetes instalados de esta forma están disponibles en el entorno
-virtual, pero no se reflejan en las dependencias declaradas en el
-archivo `pyproject.toml`.
+### Activación del entorno virtual de un proyecto
+
+Para activar el entorno virtual de un proyecto, si estamos usando el que crea por defecto `uv` en nuestro
+proyecto, se puede usar el comando:
+
+```bash
+$ source .venv/bin/activate
+```
+
+Para desactivar el entorno virtual, se ejecuta el comando:
+
+```bash
+$ deactivate
+```
+
+También se puede usar el comando `uv shell` para activar el entorno virtual del proyecto en una nueva sesión de terminal:
+
+```bash
+uv shell
+```
+
+Pór último, se puede configurar nuestra IDE favorita para que use el intérprete de Python del entorno virtual 
+del proyecto, lo que nos permitirá ejecutar el código del proyecto directamente desde la IDE, sin necesidad de 
+activar manualmente el entorno virtual en la terminal. Por ejemplo, en Visual Studio Code, se puede seleccionar 
+el intérprete de Python del entorno virtual del proyecto desde la paleta de comandos (Ctrl+Shift+P) y luego 
+ejecutar el código desde la IDE.
