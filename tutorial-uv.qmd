@@ -80,12 +80,16 @@ tree example-app
 tree -a my-project/
 my-project/
 .
+├── .git
+├── .gitignore
 ├── main.py
 ├── pyproject.toml
 ├── .python-version
 └── README.md
 ```
 
+- Un directorio `.git` y un archivo `.gitignore` para gestión del código fuente del proyecto
+mediante el sistema de control de versiones Git.
 - Un archivo `main.py` con un ejemplo básico de código Python, que imprime un mensaje de bienvenida en la terminal.
 - Archivo `pyproject.toml` que contiene metadatos del proyecto, así como información de configuración,
 dependencias de funcionamiento y de desarrollo.
